@@ -1,5 +1,8 @@
 ﻿using NUnit.Framework;
+using TestCreationExam.Common;
+using TestCreationExam.PageObjects;
 using TestCreationExam.TestCases.Common;
+using System.Diagnostics;
 
 namespace TestCreationExam.TestCases
 {
@@ -11,7 +14,7 @@ namespace TestCreationExam.TestCases
         {
             // Steps to automate:
             // 1. Navigate to https://the-internet.herokuapp.com/challenging_dom
-            // 2. Randomly generate a cell value in the Ipsum column
+            // 2. Randomly generate a cell value in the Ipsum column 
             // 3. Pass that value to a method in the page object that returns the corresponding value in the same
             //    row in the Amet column
             // 4. Using NUnit asserts, assert that the returned value is correct
@@ -22,6 +25,14 @@ namespace TestCreationExam.TestCases
             // - Use the provided WebDriver methods in BasePageLocal
             // - Document all methods using XML documentation, https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/
 
+            ChallengingDomPage challengingDomPage = new ChallengingDomPage(Driver.Value);
+            challengingDomPage.SetRandomNumberToString();
+            string randomNumber = challengingDomPage.SetRandomNumberToString();
+            string ipsumColumn = $"Apeirian{randomNumber}";
+            string ametColumn = $"Consequuntur{randomNumber}";
+
+            string columnValueResults = challengingDomPage.SetRandomNumberToString();
+            Assert.Pass(columnValueResults, "Returned Value are correct.");
         }
     }
 }

@@ -220,5 +220,39 @@ namespace TestCreationExam.PageObjects.Common
                 throw new Exception("Something went wrong while sleeping.");
             }
         }
+
+        /// <summary>
+        /// Sets the dropdown to the desired value by text.
+        /// </summary>
+        /// <param name="locator">The locator used to find the element.</param>
+        /// <param name="text">The text to be selected from the dropdown.</param>
+        public void SetDropdownByText(By locator, string text)
+        {
+            IWebElement e = FindElement(ExpectedConditions.ElementIsVisible(locator));
+            new SelectElement(e).SelectByText(text);
+        }
+
+        /// <summary>
+        /// Returns the value of the desired element
+        /// </summary>
+        /// <param name="locator">The locator used to find the element.</param>
+        /// <returns>The text contained in the value</returns>
+        public virtual string GetValue(By locator)
+        {
+            int timeOut = 10;
+            DateTime now = DateTime.Now;
+            while (DateTime.Now < now.AddSeconds(timeOut))
+            {
+                try
+                {
+                    return FindElement(ExpectedConditions.ElementIsVisible(locator)).GetAttribute("value");
+                }
+                catch (StaleElementReferenceException)
+                {
+                    // do nothing, loop again
+                }
+            }
+            throw new Exception($"Not able to get 'value' from element <{locator}> within {timeOut}s.");
+        }
     }
 }
