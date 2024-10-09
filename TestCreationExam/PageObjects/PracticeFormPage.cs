@@ -12,7 +12,7 @@ using TestCreationExam.PageObjects.Common;
 
 namespace TestCreationExam.PageObjects
 {
-    public class ToolsQaPage : BasePageLocal
+    public class PracticeFormPage : BasePageLocal
     {
 
         private readonly By _cityDelhiLocator = By.XPath("//div[text()='Delhi']");
@@ -38,23 +38,17 @@ namespace TestCreationExam.PageObjects
         private readonly By _stateNCRLocator = By.XPath("//div[text()='NCR']");
         private readonly By _submitLocator = By.Id("submit");
 
-        public ToolsQaPage(IWebDriver driver) : base(driver)
+        public PracticeFormPage(IWebDriver driver) : base(driver)
         {
         }
 
         /// <summary>
-        /// Generates Firstname, Lastname, and email address
+        /// Enters students firstname.
         /// </summary>
-        public void SetNameAndEmail()
+        /// <param name="firstname"></param>
+        public void SetFirstName(string firstname)
         {
-            string firstName = Utils.GenerateRandomString(6);
-            EditBoxSendKeysAndVerify(_firstNameLocator, firstName);
-
-            string lastName = Utils.GenerateRandomString(8);
-            EditBoxSendKeysAndVerify(_lastNameLocator, lastName);
-
-            string email = firstName + lastName + "@example.com";
-            EditBoxSendKeysAndVerify(_emailLocator, email);
+            EditBoxSendKeysAndVerify(_firstNameLocator, firstname);
         }
 
         /// <summary>
@@ -67,12 +61,30 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
+        /// Enters students lastname
+        /// </summary>
+        /// <param name="lastName"></param>
+        public void SetLastName(string lastName) 
+        {
+            EditBoxSendKeysAndVerify(_lastNameLocator, lastName);
+        }
+
+        /// <summary>
         /// Returns LastName
         /// </summary>
         /// <returns>The Lastname</returns>
         public string GetLastName()
         {
             return GetValue(_lastNameLocator);
+        }
+
+        /// <summary>
+        /// Enters students email address
+        /// </summary>
+        /// <param name="email"></param>
+        public void SetEmail(string email) 
+        {
+            EditBoxSendKeysAndVerify(_emailLocator, email);
         }
 
         /// <summary>
@@ -117,11 +129,11 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Generate random mobile phone
+        /// Enters a random mobile phone
         /// </summary>
-        public void SetMobile()
+        /// <param name="phoneNumber"></param>
+        public void SetMobile(string phoneNumber)
         {
-            string phoneNumber = Utils.GenerateRandomNumber(100, 1000) + "555" + Utils.GenerateRandomNumber(1000, 10000);
             EditBoxSendKeysAndVerify(_mobileLocator, phoneNumber);
         }
 
@@ -216,11 +228,11 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Randomly generate address
+        /// Enters students street address and number
         /// </summary>
-        public void SetCurrentAddress()
+        /// <param name="currentAddress"></param>
+        public void SetCurrentAddress(string currentAddress)
         {
-            string currentAddress = Utils.GenerateRandomNumber(1000, 10000) + " " + "Main St";
             EditBoxSendKeysAndVerify(_currentAddreessLocator, currentAddress);
         }
 
@@ -277,13 +289,6 @@ namespace TestCreationExam.PageObjects
         public void Submit()
         {
             Click(_submitLocator);
-        }
-
-        /// <summary>
-        /// wait element to get fields 
-        /// </summary>
-        public void SubmissionForm()
-        {
             IWebElement submissionForm = Driver.FindElement(_closeSubimissionFormLocator);
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(50000));
             wait.Until(ExpectedConditions.ElementToBeClickable(submissionForm));

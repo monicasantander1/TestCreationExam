@@ -14,12 +14,12 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Convert Random number into a string
+        /// Convert a random number into a string.
         /// </summary>
-        /// <returns>random number</returns>
-        public string SetRandomNumberToString() 
+        /// <returns>random number string</returns>
+        public string GenerateRandomNumber()
         {
-            int randomNumber = Utils.Random.Next(10);
+            int randomNumber = Utils.GenerateRandomNumber(1, 11);
             return randomNumber.ToString();
         }
     }

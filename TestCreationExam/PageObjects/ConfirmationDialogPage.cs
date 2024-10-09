@@ -4,23 +4,23 @@ using TestCreationExam.PageObjects.Common;
 
 namespace TestCreationExam.PageObjects
 {
-    public class SubmissionFormPage : BasePageLocal
+    public class ConfirmationDialogPage : BasePageLocal
     {
-        private readonly By _addressLocator = By.XPath("//tr[9]/td[2]");
-        private readonly By _dateOfBirthLocator = By.XPath("//tr[5]/td[2]");
-        private readonly By _genderLocator = By.XPath("//tr[3]/td[2]");
-        private readonly By _hobbiesLocator = By.XPath("//tr[7]/td[2]");
-        private readonly By _mobileLocator = By.XPath("//tr[4]/td[2]");
-        private readonly By _stateAndCityLocator = By.XPath("//tr[10]/td[2]");
-        private readonly By _studentEmailLocator = By.XPath("//tr[2]/td[2]");
-        private readonly By _studentNameLocator = By.XPath("//tr[1]/td[2]");
+        private readonly By _addressLocator = By.XPath("//tr[td[text()='Address']]/td[2]");
+        private readonly By _dateOfBirthLocator = By.XPath("//tr[td[text()='Date of Birth']]/td[2]");
+        private readonly By _genderLocator = By.XPath("//tr[td[text()='Gender']]/td[2]");
+        private readonly By _hobbiesLocator = By.XPath("//tr[td[text()='Hobbies']]/td[2]");
+        private readonly By _mobileLocator = By.XPath("//tr[td[text()='Mobile']]/td[2]");
+        private readonly By _stateAndCityLocator = By.XPath("//tr[td[text()='State and City']]/td[2]");
+        private readonly By _studentEmailLocator = By.XPath("//tr[td[text()='Student Email']]/td[2]");
+        private readonly By _studentNameLocator = By.XPath("//tr[td[text()='Student Name']]/td[2]");
 
-        public SubmissionFormPage(IWebDriver driver) : base(driver)
+        public ConfirmationDialogPage(IWebDriver driver) : base(driver)
         {
         }
 
         /// <summary>
-        /// Return name
+        /// Returns the students name.
         /// </summary>
         /// <returns>name</returns>
         public string GetStudentName()
@@ -29,7 +29,7 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Return Student Email
+        /// Returns the students email address.
         /// </summary>
         /// <returns>The email</returns>
         public string GetStudentEmail()
@@ -38,7 +38,7 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Return Gender
+        /// Returns the gender of the student.
         /// </summary>
         /// <returns>The Gender</returns>
         public string GetGender()
@@ -47,7 +47,7 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Return Mobile number
+        /// Returns the mobile number.
         /// </summary>
         /// <returns>The Mobile</returns>
         public string GetMobile()
@@ -56,7 +56,7 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Return Date of Birth
+        /// Returns the students Date of Birth.
         /// </summary>
         /// <returns>The Date of Birth</returns>
         public DateOnly GetDateOfBirth()
@@ -67,7 +67,7 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Return Hobbies options
+        /// Returns the students hobbies.
         /// </summary>
         /// <returns>The Hobbies</returns>
         public string GetHobbies()
@@ -76,7 +76,7 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Return Address
+        /// Returns the students address.
         /// </summary>
         /// <returns>The Address</returns>
         public string GetAddress()
@@ -85,7 +85,7 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Return State and City
+        /// Returns the students state and city.
         /// </summary>
         /// <returns>The State and City</returns>
         public string GetStateAndCity()

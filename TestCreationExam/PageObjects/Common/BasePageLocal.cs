@@ -222,17 +222,6 @@ namespace TestCreationExam.PageObjects.Common
         }
 
         /// <summary>
-        /// Sets the dropdown to the desired value by text.
-        /// </summary>
-        /// <param name="locator">The locator used to find the element.</param>
-        /// <param name="text">The text to be selected from the dropdown.</param>
-        public void SetDropdownByText(By locator, string text)
-        {
-            IWebElement e = FindElement(ExpectedConditions.ElementIsVisible(locator));
-            new SelectElement(e).SelectByText(text);
-        }
-
-        /// <summary>
         /// Returns the value of the desired element
         /// </summary>
         /// <param name="locator">The locator used to find the element.</param>

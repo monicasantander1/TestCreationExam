@@ -26,12 +26,12 @@ namespace TestCreationExam.TestCases
             // - Document all methods using XML documentation, https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/
 
             ChallengingDomPage challengingDomPage = new ChallengingDomPage(Driver.Value);
-            challengingDomPage.SetRandomNumberToString();
-            string randomNumber = challengingDomPage.SetRandomNumberToString();
+            challengingDomPage.GenerateRandomNumber();
+            string randomNumber = challengingDomPage.GenerateRandomNumber();
             string ipsumColumn = $"Apeirian{randomNumber}";
             string ametColumn = $"Consequuntur{randomNumber}";
 
-            string columnValueResults = challengingDomPage.SetRandomNumberToString();
+            string columnValueResults = challengingDomPage.GenerateRandomNumber();
             Assert.Pass(columnValueResults, "Returned Value are correct.");
         }
     }
