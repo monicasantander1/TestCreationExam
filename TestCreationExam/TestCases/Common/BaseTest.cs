@@ -12,8 +12,7 @@ namespace TestCreationExam.TestCases.Common
         [OneTimeSetUp]
         public virtual void OneTimeSetup()
         {
-            Url = "https://the-internet.herokuapp.com/challenging_dom"; 
-            Url = "https://demoqa.com/automation-practice-form";
+            Url = "about:blank";
         }
 
         [SetUp]

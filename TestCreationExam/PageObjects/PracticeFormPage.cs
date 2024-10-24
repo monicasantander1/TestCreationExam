@@ -5,6 +5,7 @@ using SeleniumExtras.WaitHelpers;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Reflection.Emit;
 using System.Security.Cryptography;
 using TestCreationExam.Common;
@@ -17,23 +18,25 @@ namespace TestCreationExam.PageObjects
 
         private readonly By _cityDelhiLocator = By.XPath("//div[text()='Delhi']");
         private readonly By _cityDropdownLocator = By.Id("city");
-        private readonly By _closeSubimissionFormLocator = By.Id("closeLargeModal");
+        private readonly By _closeSubmissionFormLocator = By.Id("closeLargeModal");
         private readonly By _currentAddreessLocator = By.Id("currentAddress");
         private readonly By _dateOfBirthLocator = By.Id("dateOfBirthInput");
         private readonly By _emailLocator = By.Id("userEmail");
-        private readonly By _femaleGender = By.XPath("//label[text()='Female']");
+        private readonly By _femaleGenderLocator = By.XPath("//label[text()='Female']");
         private readonly By _firstNameLocator = By.Id("firstName");
-        private readonly By _genderOptionLocator = By.CssSelector("input[type='radio']");
+        private readonly By _genderInputLocator = By.XPath("//input[@type='radio']");
+        private readonly By _genderOptionLocator = By.XPath("//label[contains(@for,'gender-radio')]");
         private readonly By _hobbiesOptionLocator = By.XPath("//label[contains(@for,'hobbies-checkbox')]");
+        private readonly By _hobbiesInputLocator = By.XPath("//input[@type='checkbox']");
         private readonly By _lastNameLocator = By.Id("lastName");
-        private readonly By _maleGender = By.XPath("//label[text()='Male']");
+        private readonly By _maleGenderLocator = By.XPath("//label[text()='Male']");
         private readonly By _mobileLocator = By.Id("userNumber");
-        private readonly By _musicHobby = By.XPath("//label[text()='Music']");
-        private readonly By _otherGender = By.XPath("//label[text()='Other']");
-        private readonly By _readingHobby = By.XPath("//label[text()='Reading']");
+        private readonly By _musicHobbyLocator = By.XPath("//label[text()='Music']");
+        private readonly By _otherGenderLocator = By.XPath("//label[text()='Other']");
+        private readonly By _readingHobbyLocator = By.XPath("//label[text()='Reading']");
         private readonly By _selectCityLocator = By.Id("city");
         private readonly By _selectStateLocator = By.Id("state");
-        private readonly By _sportsHobby = By.XPath("//label[text()='Sports']");
+        private readonly By _sportsHobbyLocator = By.XPath("//label[text()='Sports']");
         private readonly By _stateDropdownLocator = By.Id("state");
         private readonly By _stateNCRLocator = By.XPath("//div[text()='NCR']");
         private readonly By _submitLocator = By.Id("submit");
@@ -43,10 +46,10 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Enters students firstname.
+        /// Enters student's first name.
         /// </summary>
         /// <param name="firstname"></param>
-        public void SetFirstName(string firstname)
+        public void firstName(string firstname)
         {
             EditBoxSendKeysAndVerify(_firstNameLocator, firstname);
         }
@@ -61,10 +64,10 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Enters students lastname
+        /// Enters student's last name
         /// </summary>
         /// <param name="lastName"></param>
-        public void SetLastName(string lastName) 
+        public void lastName(string lastName)
         {
             EditBoxSendKeysAndVerify(_lastNameLocator, lastName);
         }
@@ -79,10 +82,10 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Enters students email address
+        /// Enters student's email address
         /// </summary>
         /// <param name="email"></param>
-        public void SetEmail(string email) 
+        public void email(string email)
         {
             EditBoxSendKeysAndVerify(_emailLocator, email);
         }
@@ -97,35 +100,53 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Holds selected Gender
+        /// Sets the Gender to a random value. 
+		/// Returns randomly selected gender
         /// </summary>
-        private string _selectedGender;
-
-        /// <summary>
-        /// Gender options. 
-        /// Randomly click a Gender
-        /// find what randon gender we selected
-        /// </summary>
-        public void SetGender()
+        public void SetGender(string targetGender)
         {
-            IWebElement genderOption1 = FindElement(_maleGender);
-            IWebElement genderOption2 = FindElement(_femaleGender);
-            IWebElement genderOption3 = FindElement(_otherGender);
-            IWebElement[] genderOptions = { genderOption1, genderOption2, genderOption3 };
-            int index = Utils.Random.Next(genderOptions.Length);
-            IWebElement genderElement = genderOptions[index];
-            genderElement.Click();
-            IReadOnlyCollection<IWebElement> genderRadios = FindElements(_genderOptionLocator);
-            _selectedGender = genderRadios.ElementAt(index).GetAttribute("value");
+            IReadOnlyCollection<IWebElement> genderLabels = FindElements(_genderOptionLocator);
+
+            foreach (IWebElement genderLabel in genderLabels)
+            {
+                string value = genderLabel.Text.Trim();
+                if (string.Equals(value, targetGender, StringComparison.OrdinalIgnoreCase))
+                {
+                    ClickElement(genderLabel);
+                    return;
+                }
+            }
+            throw new InvalidOperationException("Gender radio not found: " + targetGender);
         }
 
         /// <summary>
-        /// Return Gender
+        /// click element
+        /// </summary>
+        /// <param name="element"></param>
+        public void ClickElement(IWebElement element)
+        {
+            element.Click();
+        }
+
+        /// <summary>
+        /// Get Gender
         /// </summary>
         /// <returns>The Gender selection</returns>
         public string GetGender()
         {
-            return _selectedGender;
+            IReadOnlyCollection<IWebElement> genderLabels = FindElements(_genderOptionLocator);
+            IReadOnlyCollection<IWebElement> genderRadios = FindElements(_genderInputLocator);
+
+            for (int i = 0; i < genderLabels.Count; i++)
+            {
+                IWebElement label = genderLabels.ElementAt(i);
+                IWebElement radio = genderRadios.ElementAt(i);
+                if (radio.Selected)
+                {
+                    return label.Text;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -147,75 +168,40 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// hold date of birth selection
+        /// input Date of Birth
         /// </summary>
-        DateOnly _dateOfBirth;
-
-        /// <summary>
-        /// Random date
-        /// </summary>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <returns>Random date days</returns>
-        public static DateOnly GenerateRandomDate(DateOnly startDate, DateOnly endDate)
+        public void SetDateOfBirth(DateOnly dob)
         {
-            Random random = new Random();
-            int range = endDate.DayNumber - startDate.DayNumber;
-            int randomDays = random.Next(range);
-            return startDate.AddDays(randomDays);
+            string dobString = dob.ToString("dd MMM yyyy");
+            SendKeys(_dateOfBirthLocator, dobString);
         }
 
         /// <summary>
-        /// Random date year
-        /// </summary>
-        /// <returns>Random date year</returns>
-        public static DateOnly GenerateRandomDateFrom2000()
-        {
-            DateOnly startDate = new DateOnly(2000, 1, 1);
-            DateOnly endDate = DateOnly.FromDateTime(DateTime.Now);
-            return GenerateRandomDate(startDate, endDate);
-        }
-
-        /// <summary>
-        /// generate Date of Birth
-        /// </summary>
-        public void SetDateOfBirth()
-        {
-            _dateOfBirth = GenerateRandomDateFrom2000();
-            SendKeys(_dateOfBirthLocator, _dateOfBirth.ToString("yyyy-MM-dd"));
-            _dateOfBirth = _dateOfBirth.AddDays(-1);
-        }
-
-        /// <summary>
-        /// Return Date of Birth
+        /// Get Date of Birth
         /// </summary>
         /// <returns>The Date of Birth</returns>
         public DateOnly GetDateOfBirth()
         {
-            return _dateOfBirth;
+            string dobString = GetValue(_dateOfBirthLocator);
+            return DateOnly.ParseExact(dobString, "dd MMM yyyy", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
-        /// Holds selected Hobby
+        /// Select hobbies option 
         /// </summary>
-        private string _selectedHobbies;
-
-        /// <summary>
-        /// Hobbies Options.
-        /// Randomly click a hobby
-        /// find out what random selected we clicked
-        /// </summary>
-        public void SetHobbies()
+        public void SetHobbies(string targetHobby)
         {
-            IWebElement hobbiesOption1 = FindElement(_sportsHobby);
-            IWebElement hobbiesOption2 = FindElement(_readingHobby);
-            IWebElement hobbiesOption3 = FindElement(_musicHobby);
-            IWebElement[] hobbiesOptions = { hobbiesOption1, hobbiesOption2, hobbiesOption3 };
-            int index = Utils.Random.Next(hobbiesOptions.Length);
-            IWebElement hobbiesElement = hobbiesOptions[index];
-            hobbiesElement.Click();
-            IReadOnlyCollection<IWebElement> hobbiesCheckBox = FindElements(_hobbiesOptionLocator);
-            _selectedHobbies = hobbiesCheckBox.ElementAt(index).Text;
+            IReadOnlyCollection<IWebElement> hobbyLabels = FindElements(_hobbiesOptionLocator);
+            foreach (IWebElement hobbyLabel in hobbyLabels)
+            {
+                string value = hobbyLabel.Text.Trim();
+                if (string.Equals(value, targetHobby, StringComparison.OrdinalIgnoreCase))
+                {
+                    ClickElement(hobbyLabel);
+                    return;
+                }
+            }
+            throw new InvalidOperationException("Hobbies checkbox not found: " + targetHobby);
         }
 
         /// <summary>
@@ -224,7 +210,18 @@ namespace TestCreationExam.PageObjects
         /// <returns>The Hobby</returns>
         public string GetHobbies()
         {
-            return _selectedHobbies;
+            IReadOnlyCollection<IWebElement> hobbyLabels = FindElements(_hobbiesOptionLocator);
+            IReadOnlyCollection<IWebElement> hobbyCheckboxes = FindElements(_hobbiesInputLocator);
+            for (int i = 0; i < hobbyLabels.Count; i++)
+            {
+                IWebElement label = hobbyLabels.ElementAt(i);
+                IWebElement checkbox = hobbyCheckboxes.ElementAt(i);
+                if (checkbox.Selected)
+                {
+                    return label.Text;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -246,11 +243,6 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// hold state and city selected
-        /// </summary>
-        private string _selectedState, _selectedCity;
-
-        /// <summary>
         /// click State NCR
         /// click city Delhi
         /// </summary>
@@ -258,11 +250,8 @@ namespace TestCreationExam.PageObjects
         {
             Click(_selectStateLocator);
             Click(_stateNCRLocator);
-            _selectedState = FindElement(_stateNCRLocator).Text;
-
             Click(_selectCityLocator);
             Click(_cityDelhiLocator);
-            _selectedCity = FindElement(_cityDelhiLocator).Text;
         }
 
         /// <summary>
@@ -271,7 +260,7 @@ namespace TestCreationExam.PageObjects
         /// <returns>The State</returns>
         public string GetState()
         {
-            return _selectedState;
+            return GetText(_stateNCRLocator);
         }
 
         /// <summary>
@@ -280,7 +269,7 @@ namespace TestCreationExam.PageObjects
         /// <returns>The City</returns>
         public string GetCity()
         {
-            return _selectedCity;
+            return GetText(_cityDelhiLocator);
         }
 
         /// <summary>
@@ -289,7 +278,7 @@ namespace TestCreationExam.PageObjects
         public void Submit()
         {
             Click(_submitLocator);
-            IWebElement submissionForm = Driver.FindElement(_closeSubimissionFormLocator);
+            IWebElement submissionForm = Driver.FindElement(_closeSubmissionFormLocator);
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(50000));
             wait.Until(ExpectedConditions.ElementToBeClickable(submissionForm));
         }

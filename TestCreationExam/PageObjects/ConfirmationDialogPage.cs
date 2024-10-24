@@ -20,18 +20,18 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Returns the students name.
+        /// Returns the student's name.
         /// </summary>
-        /// <returns>name</returns>
+        /// <returns>The student's name</returns>
         public string GetStudentName()
         {
             return GetText(_studentNameLocator);
         }
 
         /// <summary>
-        /// Returns the students email address.
+        /// Returns the student's email address.
         /// </summary>
-        /// <returns>The email</returns>
+        /// <returns>The student's email</returns>
         public string GetStudentEmail()
         {
             return GetText(_studentEmailLocator);
@@ -40,25 +40,25 @@ namespace TestCreationExam.PageObjects
         /// <summary>
         /// Returns the gender of the student.
         /// </summary>
-        /// <returns>The Gender</returns>
+        /// <returns>The student's gender</returns>
         public string GetGender()
         {
             return GetText(_genderLocator);
         }
 
         /// <summary>
-        /// Returns the mobile number.
+        /// Returns the student's mobile number.
         /// </summary>
-        /// <returns>The Mobile</returns>
+        /// <returns>The student's mobile number</returns>
         public string GetMobile()
         {
             return GetText(_mobileLocator);
         }
 
         /// <summary>
-        /// Returns the students Date of Birth.
+        /// Returns the student's date of birth.
         /// </summary>
-        /// <returns>The Date of Birth</returns>
+        /// <returns>The student's date of birth</returns>
         public DateOnly GetDateOfBirth()
         {
             CultureInfo cultureInfo = CultureInfo.InvariantCulture;
@@ -67,27 +67,27 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Returns the students hobbies.
+        /// Returns the student's hobbies.
         /// </summary>
-        /// <returns>The Hobbies</returns>
+        /// <returns>The student's hobbies</returns>
         public string GetHobbies()
         {
             return GetText(_hobbiesLocator);
         }
 
         /// <summary>
-        /// Returns the students address.
+        /// Returns the student's address.
         /// </summary>
-        /// <returns>The Address</returns>
+        /// <returns>The student's address</returns>
         public string GetAddress()
         {
             return GetText(_addressLocator);
         }
 
         /// <summary>
-        /// Returns the students state and city.
+        /// Returns the student's state and city.
         /// </summary>
-        /// <returns>The State and City</returns>
+        /// <returns>The student's state and city</returns>
         public string GetStateAndCity()
         {
             return GetText(_stateAndCityLocator);
