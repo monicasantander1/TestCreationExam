@@ -12,5 +12,16 @@ namespace TestCreationExam.PageObjects
         public ChallengingDomPage(IWebDriver driver) : base(driver)
         {
         }
+        /// <summary>
+        /// Random row and column
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <returns>The Row and column element</returns>
+        public string GetCell(int row, int column)
+        {
+            By locator = By.XPath($"//tbody/tr[{row}]/td[{column}]");
+            return FindElement(locator).Text;
+        }
     }
 }

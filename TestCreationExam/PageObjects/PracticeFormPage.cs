@@ -38,7 +38,7 @@ namespace TestCreationExam.PageObjects
         private readonly By _selectStateLocator = By.Id("state");
         private readonly By _sportsHobbyLocator = By.XPath("//label[text()='Sports']");
         private readonly By _stateDropdownLocator = By.Id("state");
-        private readonly By _stateNCRLocator = By.XPath("//div[text()='NCR']");
+        private readonly By _stateNcrLocator = By.XPath("//div[text()='NCR']");
         private readonly By _submitLocator = By.Id("submit");
 
         public PracticeFormPage(IWebDriver driver) : base(driver)
@@ -48,16 +48,16 @@ namespace TestCreationExam.PageObjects
         /// <summary>
         /// Enters student's first name.
         /// </summary>
-        /// <param name="firstname"></param>
-        public void firstName(string firstname)
+        /// <param name="firstName"></param>
+        public void SetFirstName(string firstName)
         {
-            EditBoxSendKeysAndVerify(_firstNameLocator, firstname);
+            EditBoxSendKeysAndVerify(_firstNameLocator, firstName);
         }
 
         /// <summary>
-        /// Returns Firstname
+        /// Returns the student's first name
         /// </summary>
-        /// <returns>The Firstname</returns>
+        /// <returns>The first name</returns>
         public string GetFirstName()
         {
             return GetValue(_firstNameLocator);
@@ -67,15 +67,15 @@ namespace TestCreationExam.PageObjects
         /// Enters student's last name
         /// </summary>
         /// <param name="lastName"></param>
-        public void lastName(string lastName)
+        public void LastName(string lastName)
         {
             EditBoxSendKeysAndVerify(_lastNameLocator, lastName);
         }
 
         /// <summary>
-        /// Returns LastName
+        /// Returns the student's last name
         /// </summary>
-        /// <returns>The Lastname</returns>
+        /// <returns>The last name</returns>
         public string GetLastName()
         {
             return GetValue(_lastNameLocator);
@@ -85,13 +85,13 @@ namespace TestCreationExam.PageObjects
         /// Enters student's email address
         /// </summary>
         /// <param name="email"></param>
-        public void email(string email)
+        public void Email(string email)
         {
             EditBoxSendKeysAndVerify(_emailLocator, email);
         }
 
         /// <summary>
-        /// Returns Email address
+        /// Returns the student's email address
         /// </summary>
         /// <returns>The email address</returns>
         public string GetEmail()
@@ -100,32 +100,26 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Sets the Gender to a random value. 
-		/// Returns randomly selected gender
+        /// Sets a random Gender option
         /// </summary>
-        public void SetGender(string targetGender)
+        public void SetGender()
         {
-            IReadOnlyCollection<IWebElement> genderLabels = FindElements(_genderOptionLocator);
-
-            foreach (IWebElement genderLabel in genderLabels)
+            IWebElement option1 = FindElement(_maleGenderLocator);
+            IWebElement option2 = FindElement(_femaleGenderLocator);
+            IWebElement option3 = FindElement(_otherGenderLocator);
+            int choice = Utils.Random.Next(1, 4);
+            switch (choice)
             {
-                string value = genderLabel.Text.Trim();
-                if (string.Equals(value, targetGender, StringComparison.OrdinalIgnoreCase))
-                {
-                    ClickElement(genderLabel);
-                    return;
-                }
+                case 1:
+                    option1.Click();
+                    break;
+                case 2:
+                    option2.Click();
+                    break;
+                case 3:
+                    option3.Click();
+                    break;
             }
-            throw new InvalidOperationException("Gender radio not found: " + targetGender);
-        }
-
-        /// <summary>
-        /// click element
-        /// </summary>
-        /// <param name="element"></param>
-        public void ClickElement(IWebElement element)
-        {
-            element.Click();
         }
 
         /// <summary>
@@ -153,7 +147,7 @@ namespace TestCreationExam.PageObjects
         /// Enters a random mobile phone
         /// </summary>
         /// <param name="phoneNumber"></param>
-        public void SetMobile(string phoneNumber)
+        public void SetMobileNumber(string phoneNumber)
         {
             EditBoxSendKeysAndVerify(_mobileLocator, phoneNumber);
         }
@@ -187,21 +181,26 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Select hobbies option 
+        /// Sets a random Hobby option
         /// </summary>
-        public void SetHobbies(string targetHobby)
+        public void SetHobby()
         {
-            IReadOnlyCollection<IWebElement> hobbyLabels = FindElements(_hobbiesOptionLocator);
-            foreach (IWebElement hobbyLabel in hobbyLabels)
+            IWebElement option1 = FindElement(_sportsHobbyLocator);
+            IWebElement option2 = FindElement(_musicHobbyLocator);
+            IWebElement option3 = FindElement(_readingHobbyLocator);
+            int choice = Utils.Random.Next(1, 4);
+            switch (choice)
             {
-                string value = hobbyLabel.Text.Trim();
-                if (string.Equals(value, targetHobby, StringComparison.OrdinalIgnoreCase))
-                {
-                    ClickElement(hobbyLabel);
-                    return;
-                }
+                case 1:
+                    option1.Click();
+                    break;
+                case 2:
+                    option2.Click();
+                    break;
+                case 3:
+                    option3.Click();
+                    break;
             }
-            throw new InvalidOperationException("Hobbies checkbox not found: " + targetHobby);
         }
 
         /// <summary>
@@ -225,7 +224,7 @@ namespace TestCreationExam.PageObjects
         }
 
         /// <summary>
-        /// Enters students street address and number
+        /// Enters student's street address and number
         /// </summary>
         /// <param name="currentAddress"></param>
         public void SetCurrentAddress(string currentAddress)
@@ -236,20 +235,19 @@ namespace TestCreationExam.PageObjects
         /// <summary>
         /// Return the current address
         /// </summary>
-        /// <returns>The Address</returns>
+        /// <returns>The current address</returns>
         public string GetCurrentAddress()
         {
             return GetValue(_currentAddreessLocator);
         }
 
         /// <summary>
-        /// click State NCR
-        /// click city Delhi
+        /// Clicks NCR for state and Dehi for city
         /// </summary>
         public void SetStateAndCity()
         {
             Click(_selectStateLocator);
-            Click(_stateNCRLocator);
+            Click(_stateNcrLocator);
             Click(_selectCityLocator);
             Click(_cityDelhiLocator);
         }
@@ -260,7 +258,7 @@ namespace TestCreationExam.PageObjects
         /// <returns>The State</returns>
         public string GetState()
         {
-            return GetText(_stateNCRLocator);
+            return GetText(_stateNcrLocator);
         }
 
         /// <summary>

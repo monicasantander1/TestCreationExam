@@ -4,7 +4,7 @@ using TestCreationExam.PageObjects.Common;
 
 namespace TestCreationExam.PageObjects
 {
-    public class ConfirmationDialogPage : BasePageLocal
+    public class ConfirmationDialog : BasePageLocal
     {
         private readonly By _addressLocator = By.XPath("//tr[td[text()='Address']]/td[2]");
         private readonly By _dateOfBirthLocator = By.XPath("//tr[td[text()='Date of Birth']]/td[2]");
@@ -15,7 +15,7 @@ namespace TestCreationExam.PageObjects
         private readonly By _studentEmailLocator = By.XPath("//tr[td[text()='Student Email']]/td[2]");
         private readonly By _studentNameLocator = By.XPath("//tr[td[text()='Student Name']]/td[2]");
 
-        public ConfirmationDialogPage(IWebDriver driver) : base(driver)
+        public ConfirmationDialog(IWebDriver driver) : base(driver)
         {
         }
 
